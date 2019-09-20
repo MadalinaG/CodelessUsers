@@ -1,0 +1,9 @@
+.field-error {
+    border: 1px solid red;
+}
+
+.card {
+    margin-top: 2%;
+    width: 25%;
+}
+

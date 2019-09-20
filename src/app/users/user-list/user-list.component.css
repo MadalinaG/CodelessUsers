@@ -1,0 +1,22 @@
+.card {
+    margin-top: 2%;
+    width: 50%;
+    margin-bottom: 2%;
+}
+.progressBar{
+    margin-top: 1%;
+    width: 50%;
+    margin-bottom: 2%;
+}
+.btn.btn-success {
+    color: #ffffff;
+    background-color: #5CB85C;
+    background-image: linear-gradient(to bottom, #5CB85C, #419641);
+    border-color: #3E8F3E #3E8F3E #3E8F3E;
+}
+.btn.btn-success:hover {
+    color: #ffffff;
+    background-color: #419641;
+    background-image: linear-gradient(to bottom, #419641, #419641);
+    border-color: #3E8F3E #3E8F3E #3E8F3E;
+}
