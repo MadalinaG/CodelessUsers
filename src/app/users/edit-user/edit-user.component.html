@@ -9,9 +9,8 @@
         <div class="container-fluid">
             <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
                 <div class="form-group ">
-                    <label for="Name" class="control-label col-md-12">Name </label>
                     <div class="col-md-12">
-                        <input class="form-control" id="name" type="text" formControlName="name"
+                        <input class="form-control" id="name" type="text" formControlName="name" placeholder="Name" autocomplete="off"
                             [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
                         <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                             <div *ngIf="f.name.errors.required">Name is required</div>
@@ -19,11 +18,10 @@
                     </div>
                 </div>
                 <div class="form-group ">
-                    <label for="Birthday" class="control-label col-md-12">Birthday </label>
                     <div class="col-md-12">
                         <div class="input-group-append"> </div>
                         <div class="form-group">
-                            <input type="text" formControlName="birthday" placeholder="yyyy-mm-dd" class="form-control"
+                            <input type="text" formControlName="birthday" placeholder="Birthday yyyy-mm-dd" class="form-control" autocomplete="off"
                                 bsDatepicker [minDate]="minDate" [maxDate]="maxDate">
                         </div>
                         <div *ngIf="f.birthday.errors" class="invalid-feedback d-block">
@@ -35,7 +33,6 @@
                     </div>
                 </div>
                 <div class="form-group ">
-                    <label for="Departments" class="control-label col-md-12">Department </label>
                     <div class="col-md-12">
                         <ng-multiselect-dropdown [placeholder]="'Select Department'" [data]="dropdownList"
                             formControlName="selectedItems" [settings]="dropdownSettings"

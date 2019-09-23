@@ -112,7 +112,7 @@ export class EditUserComponent implements OnInit {
         this.getUserDetail(id);
       }
     );
-    
+
     console.log("Edit mode:", this.isEditMode);
     console.log("User id:", this.userObject.id);
   }
@@ -224,7 +224,11 @@ export class EditUserComponent implements OnInit {
         } else {
           this.userService.deleteUser(this.userObject.id)
             .subscribe({
-              next: () => this.onSaveComplete(),
+              next: () => {
+                this.onSaveComplete();
+                var userMessage = this.userObject.name + " was successfully deleted!";
+                this.toast.success(userMessage, "Success!");
+              },
               error: err => this.errorMessage = err
             });
         }

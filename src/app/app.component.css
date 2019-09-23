@@ -1,35 +1,30 @@
-/* AppComponent's private CSS styles */
-h1 {
-    font-size: 1.2em;
-    margin-bottom: 0;
-  }
-  h2 {
-    font-size: 2em;
-    margin-top: 0;
-    padding-top: 0;
-  }
-  nav a {
-    padding: 5px 10px;
-    text-decoration: none;
-    margin-top: 10px;
-    display: inline-block;
-    background-color: #eee;
-    border-radius: 4px;
-  }
-  nav a:visited, a:link {
-    color: #334953;
-  }
-  nav a:hover {
-    color: #039be5;
-    background-color: #CFD8DC;
-  }
-  nav a.active {
-    color: #039be5;
-  }
-  
-  
-  /*
-  Copyright Google LLC. All Rights Reserved.
-  Use of this source code is governed by an MIT-style license that
-  can be found in the LICENSE file at http://angular.io/license
-  */
+#content {
+  height: 50%;
+  width: 100%;
+  background-color: rgb(110,87,204); /* For browsers that do not support gradients */
+  background-image: linear-gradient(to right, rgb(110,87,204) , rgb(179,81,194)); /* Standard syntax (must be last) */
+  position: absolute;
+
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.active-link{
+  color: silver;
+}
+
+.fixed {
+  position: fixed;
+  top: 56px;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+ 
+}
+.containerText {
+  background-image: linear-gradient(to right, rgb(110,87,204) , rgb(179,81,194));
+}

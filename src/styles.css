@@ -2,20 +2,12 @@
 /* Application-wide Styles */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-
-h1 {
-    color: #369;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 250%;
-  }
-  h2, h3 {
-    color: #444;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: lighter;
-  }
-  body {
-    margin: 2em;
-  }
+body {
+  font-family: poppins,Arial,sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+}
+ 
   body, input[type="text"], button {
     color: #333;
     font-family: Cambria, Georgia;
@@ -47,4 +39,32 @@ h1 {
 }
 .toast-warning {
   background-color: #F89406 !important;
+}
+
+.table{
+  color: #7d8184;
+  border-radius: 25px !important;
+}
+.table .thead-dark th {
+  color: #fff;
+  background-color: #36304A;
+  border-color: #32383e;
+}
+.navbar{
+  background-color: rgb(110,87,204); /* For browsers that do not support gradients */
+  background-image: linear-gradient(to right, rgb(110,87,204) , rgb(179,81,194)); /* Standard syntax (must be last) */
+}
+a{
+  color: #fff;
+}
+a:hover{
+  color:#C0C0C0;
+}
+a:active{
+  color:#C0C0C0;
+}
+
+.display-t {
+  margin-top: 5%;
+  color: #fff;
 }

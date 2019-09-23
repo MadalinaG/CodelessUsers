@@ -1,8 +1,48 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/heroes">Heroes</a>
-  <a routerLink="/users">Users</a>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      Cool App
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/dashboard"  routerLinkActive="active-link">Dashboard
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/heroes"  routerLinkActive="active-link">Heroes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/users"  routerLinkActive="active-link">Users</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
-<router-outlet></router-outlet>
-<app-messages></app-messages>
+
+<div id="content">
+  <div class="display-t text-center">
+    <div class="display-tc">
+      <div class="containerText fixed">
+        <div class="col-md-12">
+          <div class="animate-box fadeInUp animated-fast">
+            <h2>Take on your biggest projects and goals</h2>
+            <p>with this super cool app which have high quality features</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row  justify-content-center">
+  <div class="col-12 ">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<!-- <app-messages></app-messages> -->
