@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let user of users">
-                        <td><div class="d-flex justify-content-center"> <input type="checkbox"  (change)="checkBox($event);"></div></td>
+                        <td><div class="d-flex justify-content-center"> <input  id="checkboxUser" type="checkbox"  (change)="checkBox($event);"></div></td>
                         <td>{{ user.name }}</td>
                         <td><p *ngIf="user.departments">{{ user.departments[0].name}}</p></td>
                         <td>{{ user.birthday | userage }}</td>
