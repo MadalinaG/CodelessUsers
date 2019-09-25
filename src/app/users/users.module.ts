@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersRoutingModule } from './users-routing';
-import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDatepickerModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DepartmentComponent } from './services/department/department.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,9 +29,10 @@ import {MatButtonModule} from '@angular/material/button';
     NgMultiSelectDropDownModule.forRoot(),
     BsDatepickerModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    NgbProgressbarModule,
   ],
-  exports: [],
+  exports: [DepartmentComponent],
   entryComponents: [
     ConfirmationDialogComponent
   ],

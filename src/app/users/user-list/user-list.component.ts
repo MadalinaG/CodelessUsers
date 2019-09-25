@@ -27,7 +27,10 @@ export class UserListComponent implements OnInit {
   private getUsers() {
 
     this.allUsersLoaded = true; //while the call is done, hide the button
+    this.callUserServicePerPageToGetUsers();
+  }
 
+  private callUserServicePerPageToGetUsers() {
     this.userService.getUsersByPage(this.pageNr, this.pageSize).subscribe({
       next: userslist => {
         if (userslist.length < 1 || userslist.length < this.pageSize) {
@@ -41,9 +44,7 @@ export class UserListComponent implements OnInit {
       },
       error: err => this.errorMessage = err
     });
-
   }
-
 
   onLoadMore() {
     this.pageNr = this.pageNr + 1;

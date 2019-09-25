@@ -1,16 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
+import { HeroService } from '../heroes/hero.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
-
+  let getHeroesSpy: any;
   beforeEach(async(() => {
+
+    const heroService = jasmine.createSpyObj('HeroService', ['getHeroes']);
+    getHeroesSpy = heroService.getHeroes;
+
     TestBed.configureTestingModule({
-      declarations: [ DashboardComponent ]
+      declarations: [DashboardComponent],
+      providers: [{ provide: HeroService, useValue: heroService}]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -6,8 +6,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class InMemoryDataService implements InMemoryDbService {
-  createDb() {
-    const heroes = [
+  createDb() : Hero[] {
+    var heroes : Hero[];
+
+     heroes = [
       { id: 11, name: 'Dr Nice' },
       { id: 12, name: 'Narco' },
       { id: 13, name: 'Bombasto' },
@@ -18,8 +20,8 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 18, name: 'Dr IQ' },
       { id: 19, name: 'Magma' },
       { id: 20, name: 'Tornado' }
-    ];
-    return {heroes};
+    ] ;
+    return heroes;
   }
 
   // Overrides the genId method to ensure that a hero always has an id.

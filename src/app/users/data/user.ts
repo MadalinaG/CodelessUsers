@@ -5,4 +5,15 @@ export class User {
     name: string;
     birthday: string;
     departments: Department[];
+
+    
+    constructor(id, name, birthday, departments){
+        this.id = id;
+        this.name = name;
+        this.birthday = birthday;
+        this.departments = departments;
+    }
+
+  
+    
 }

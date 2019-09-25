@@ -11,13 +11,14 @@ import { HttpClientModule }    from '@angular/common/http';
 import {ToastrModule} from 'ngx-toastr';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { UsersModule } from './users/users.module';
-import {NgbModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbDatepickerModule, NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,10 +31,12 @@ import {MatButtonModule} from '@angular/material/button';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     FormsModule,
     HttpClientModule,
     UsersModule,
     NgbModule,
+    NgbProgressbarModule,
     FontAwesomeModule,
     NgbDatepickerModule,
     NgMultiSelectDropDownModule.forRoot(),

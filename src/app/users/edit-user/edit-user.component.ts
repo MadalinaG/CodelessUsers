@@ -8,7 +8,7 @@ import { Department } from '../data/department';
 import { ListDefinition } from '../data/listDefinition';
 import { MyDepartmentAgeValidator } from '../helpers/userValidation';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
@@ -23,7 +23,7 @@ import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confi
 export class EditUserComponent implements OnInit {
 
   pageTitle = 'User Edit';
-  userObject: User = new User();
+  userObject: User;
   errorMessage = '';
   submitted = false;
   departments: Department[] = [];
