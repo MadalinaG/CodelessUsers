@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'src/app/message.service';
 import { Observable, of } from 'rxjs';
-import { Department } from '../../data/department';
+import { Department } from '../data/department';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 
 const endpoint = '/api/department';
 const httpOptions = {
- headers: new HttpHeaders({
-   'Content-Type':  'application/json',
-   'Access-Control-Allow-Origin' : '*'
- })
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  })
 };
 @Injectable({
   providedIn: 'root'
@@ -28,20 +28,14 @@ export class DepartmentService {
       );
   }
 
-  addDepartment (department : Department): Observable<Department> {
-    return this.http.post<Department>(endpoint, department,httpOptions).pipe(
-      tap((department) => this.log(`added department w/ id=${department}`)),
+  addDepartment(department: Department): Observable<Department> {
+    return this.http.post<Department>(endpoint, department, httpOptions).pipe(
+      tap((departmentResponse) => this.log(`added department w/ id=${departmentResponse}`)),
       catchError(this.handleError<any>('addDepartment'))
     );
   }
 
- /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
@@ -55,7 +49,6 @@ export class DepartmentService {
     };
   }
 
-  /** Log a HeroService message with the MessageService */
   private log(message: string) {
     this.messageService.add(`DepartmentService: ${message}`);
   }

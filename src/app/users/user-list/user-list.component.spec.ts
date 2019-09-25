@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserListComponent } from './user-list.component';
-import { UserService } from '../services/user.service';
+import { UserService } from './user.service';
 import { User } from '../data/user';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserAgePipe } from '../helpers/UserAgePipe';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,6 +12,20 @@ describe('UserListComponent', () => {
   let component: UserListComponent;
   let fixture: ComponentFixture<UserListComponent>;
   let userService: UserService;
+  const fakedUserlist = [
+    new User(1, 'Test1', new Date(), null),
+    new User(2, 'Test2', new Date(), null),
+    new User(3, 'Test3', new Date(), null),
+    new User(4, 'Test4', new Date(), null),
+    new User(5, 'Test5', new Date(), null),
+    new User(6, 'Test6', new Date(), null),
+    new User(7, 'Test7', new Date(), null),
+    new User(8, 'Test8', new Date(), null),
+    new User(9, 'Test9', new Date(), null),
+    new User(10, 'Test10', new Date(), null),
+    new User(11, 'Test11', new Date(), null),
+  ];
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -47,71 +61,30 @@ describe('UserListComponent', () => {
     expect(component.pageSize).toEqual(10);
   });
 
-  it("should use the user list from the service asynchronously", () => {
-    const fakedUserlist = [new User(1, "Test1", new Date(), null), new User(2, "Test2", new Date(), null)];
+  it('should use the user list from the service asynchronously', () => {
     spyOn(userService, 'getUsersByPage').and.returnValue(of(fakedUserlist));
     component.ngOnInit();
     expect(component.users).toEqual(fakedUserlist);
   });
 
-  it("should have allUsersLoaded on false", () => {
-    const fakedUserlist = [
-      new User(1, "Test1", new Date(), null),
-      new User(2, "Test2", new Date(), null),
-      new User(3, "Test3", new Date(), null),
-      new User(4, "Test4", new Date(), null),
-      new User(5, "Test5", new Date(), null),
-      new User(6, "Test6", new Date(), null),
-      new User(7, "Test7", new Date(), null),
-      new User(8, "Test8", new Date(), null),
-      new User(9, "Test9", new Date(), null),
-      new User(10, "Test10", new Date(), null),
-      new User(11, "Test11", new Date(), null),
-    ];
+  it('should have allUsersLoaded on false', () => {
     spyOn(userService, 'getUsersByPage').and.returnValue(of(fakedUserlist));
     component.ngOnInit();
     expect(component.allUsersLoaded).toEqual(false);
     expect(component.progress).toEqual(0);
     expect(component.pageNr).toEqual(0);
-    expect(component.pageSize).toEqual(10);
   });
 
-  it("should increase the page nr and return users", () => {
-    const fakedUserlist = [
-      new User(1, "Test1", new Date(), null),
-      new User(2, "Test2", new Date(), null),
-      new User(3, "Test3", new Date(), null),
-      new User(4, "Test4", new Date(), null),
-      new User(5, "Test5", new Date(), null),
-      new User(6, "Test6", new Date(), null),
-      new User(7, "Test7", new Date(), null),
-      new User(8, "Test8", new Date(), null),
-      new User(9, "Test9", new Date(), null),
-      new User(10, "Test10", new Date(), null),
-      new User(11, "Test11", new Date(), null),
-    ];
+  it('should increase the page nr and return users', () => {
+
     spyOn(userService, 'getUsersByPage').and.returnValue(of(fakedUserlist));
     component.onLoadMore();
     expect(component.allUsersLoaded).toEqual(false);
     expect(component.progress).toEqual(0);
     expect(component.pageNr).toEqual(1);
-    expect(component.pageSize).toEqual(10);
   });
 
-  it("should increase the checkBoxesChecked and set progress to 10%", () => {
-    const fakedUserlist = [
-      new User(1, "Test1", new Date(), null),
-      new User(2, "Test2", new Date(), null),
-      new User(3, "Test3", new Date(), null),
-      new User(4, "Test4", new Date(), null),
-      new User(5, "Test5", new Date(), null),
-      new User(6, "Test6", new Date(), null),
-      new User(7, "Test7", new Date(), null),
-      new User(8, "Test8", new Date(), null),
-      new User(9, "Test9", new Date(), null),
-      new User(10, "Test10", new Date(), null),
-      new User(11, "Test11", new Date(), null),
-    ];
+  it('should increase the checkBoxesChecked and set progress to 10%', () => {
     spyOn(userService, 'getUsersByPage').and.returnValue(of(fakedUserlist));
     component.ngOnInit();
     const event = Object.assign({} as Event, {
@@ -120,28 +93,15 @@ describe('UserListComponent', () => {
       }
     });
 
-    component.checkBox(event)
+    expect(component.progress).toEqual(0);
+    component.checkBoxClicked(event.currentTarget.checked);
 
     expect(component.allUsersLoaded).toEqual(false);
     expect(component.progress).toBeGreaterThan(9);
     expect(component.checkBoxesChecked).toEqual(1);
-    expect(component.pageSize).toEqual(10);
   });
 
-  it("should increase the checkBoxesChecked and decrease it on the second call", () => {
-    const fakedUserlist = [
-      new User(1, "Test1", new Date(), null),
-      new User(2, "Test2", new Date(), null),
-      new User(3, "Test3", new Date(), null),
-      new User(4, "Test4", new Date(), null),
-      new User(5, "Test5", new Date(), null),
-      new User(6, "Test6", new Date(), null),
-      new User(7, "Test7", new Date(), null),
-      new User(8, "Test8", new Date(), null),
-      new User(9, "Test9", new Date(), null),
-      new User(10, "Test10", new Date(), null),
-      new User(11, "Test11", new Date(), null),
-    ];
+  it('should increase the checkBoxesChecked and decrease it on the second call', () => {
     spyOn(userService, 'getUsersByPage').and.returnValue(of(fakedUserlist));
     component.ngOnInit();
     const event1 = Object.assign({} as Event, {
@@ -156,22 +116,20 @@ describe('UserListComponent', () => {
       }
     });
 
-    component.checkBox(event1);
-    component.checkBox(event2);
+    component.checkBoxClicked(event1.currentTarget.checked);
+    component.checkBoxClicked(event2.currentTarget.checked);
 
     expect(component.allUsersLoaded).toEqual(false);
     expect(component.progress).toEqual(0);
     expect(component.checkBoxesChecked).toEqual(0);
     expect(component.pageSize).toEqual(10);
-
   });
 
-  it("should use the user list from the service asynchronously", () => {
-    const fakedUserlist = [new User(1, "Test1", new Date(), null), new User(2, "Test2", new Date(), null)];
+  it('should use the user list from the service asynchronously', () => {
     spyOn(userService, 'getUsersByPage').and.callFake(() => {
       return throwError(new Error('Fake error'));
     });
-
+    // spyOn(userService, 'getUsersByPage').and.returnValue(throwError('Fake error'));
     component.ngOnInit();
     expect(component.errorMessage.toString()).toEqual('Error: Fake error');
   });

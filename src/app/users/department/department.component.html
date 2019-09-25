@@ -1,6 +1,5 @@
 
-<p></p>
-<button class="btn btn-sm btn-outline-primary" (click)="open(content)">Add Department</button>
+<button class="btn btn-sm btn-outline-primary" (click)="openModal(content)">Add Department</button>
 
 
 <ng-template #content let-modal>
@@ -13,14 +12,14 @@
     <div class="modal-body">
       <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="Name">Department name</label>
+          <label for="name">Department name</label>
           <div class="input-group">
-            <input class="form-control" id="name" type="text" formControlName="Name" placeholder="Name">
+            <input class="form-control" id="name" type="text" formControlName="name" placeholder="Name">
           </div>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      <button type="submit" class="btn btn-outline-dark" (click)="onSave()">Save</button>
     </div>
   </ng-template>

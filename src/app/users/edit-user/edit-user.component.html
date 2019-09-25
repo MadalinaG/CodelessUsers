@@ -11,9 +11,9 @@
                 <div class="form-group ">
                     <div class="col-md-12">
                         <input class="form-control" id="name" type="text" formControlName="name" placeholder="Name" autocomplete="off"
-                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                            <div *ngIf="f.name.errors.required">Name is required</div>
+                            [ngClass]="{ 'is-invalid': submitted && form.name.errors }">
+                        <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+                            <div *ngIf="form.name.errors.required">Name is required</div>
                         </div>
                     </div>
                 </div>
@@ -24,10 +24,10 @@
                             <input type="text" formControlName="birthday" placeholder="Birthday yyyy-mm-dd" class="form-control" autocomplete="off"
                                 bsDatepicker [minDate]="minDate" [maxDate]="maxDate">
                         </div>
-                        <div *ngIf="f.birthday.errors" class="invalid-feedback d-block">
-                            <div *ngIf="f.birthday.errors.myDepartmentAgeValidatorCodeless">Codeless users should be at
+                        <div *ngIf="form.birthday.errors" class="invalid-feedback d-block">
+                            <div *ngIf="form.birthday.errors.myDepartmentAgeValidatorCodeless">Codeless users should be at
                                 least 20 years old.</div>
-                            <div *ngIf="f.birthday.errors.myDepartmentAgeValidatorCodemore">Codemore users should be at
+                            <div *ngIf="form.birthday.errors.myDepartmentAgeValidatorCodemore">Codemore users should be at
                                 least 24 years old.</div>
                         </div>
                     </div>
@@ -37,10 +37,10 @@
                         <ng-multiselect-dropdown [placeholder]="'Select Department'" [data]="dropdownList"
                             formControlName="selectedItems" [settings]="dropdownSettings"
                             (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
-                            [ngClass]="{ 'is-invalid': submitted && f.selectedItems.errors }">
+                            [ngClass]="{ 'is-invalid': submitted && form.selectedItems.errors }">
                         </ng-multiselect-dropdown>
-                        <div *ngIf="submitted && f.selectedItems.errors" class="invalid-feedback">
-                            <div *ngIf="f.selectedItems.errors.required">Department is required</div>
+                        <div *ngIf="submitted && form.selectedItems.errors" class="invalid-feedback">
+                            <div *ngIf="form.selectedItems.errors.required">Department is required</div>
                         </div>
                     </div>
                 </div>

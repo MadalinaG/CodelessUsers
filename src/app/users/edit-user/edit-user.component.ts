@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators, FormGroup } from '@angular/forms';
-import { UserService } from '../services/user.service';
-import { DepartmentComponent } from '../services/department/department.component';
-import { DepartmentService } from '../services/department/department.service';
+import { UserService } from '../user-list/user.service';
+import { DepartmentService } from '../department/department.service';
 import { User } from '../data/user';
 import { Department } from '../data/department';
 import { ListDefinition } from '../data/listDefinition';
-import { MyDepartmentAgeValidator } from '../helpers/userValidation';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +15,6 @@ import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confi
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css'],
-  providers: [DepartmentComponent]
 })
 
 export class EditUserComponent implements OnInit {
@@ -35,8 +32,11 @@ export class EditUserComponent implements OnInit {
   month = this.currentDate.getMonth();
   day = this.currentDate.getDate();
 
-  maxDate = new Date(this.year - 18, this.month, this.day) // the user should be at least 18 years old
-  minDate = new Date(this.year - 60, this.month, this.day) // the user should be young ish
+  dropdownList: Department[] = [];
+  dropdownSettings = {};
+
+  maxDate = new Date(this.year - 18, this.month, this.day); // the user should be at least 18 years old
+  minDate = new Date(this.year - 60, this.month, this.day); // the user should be young ish
 
   isDataLoaded: boolean;
 
@@ -44,7 +44,6 @@ export class EditUserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private departmentComponent: DepartmentComponent,
     private departmentService: DepartmentService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -53,16 +52,11 @@ export class EditUserComponent implements OnInit {
     this.createForm();
   }
 
+  // naming!!
   // convenience getter for easy access to form fields
-  get f() { return this.userForm.controls; }
+  get form() { return this.userForm.controls; }
 
-  openDepartmentModalOnClick(content) {
-    this.departmentComponent.open(content);
-  }
-
-  setDepartments(departments): void {
-
-
+  setDepartments(departments: Department[]): void {
     this.departments = departments;
     this.dropdownList = this.departments;
 
@@ -75,8 +69,6 @@ export class EditUserComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
-
-
   }
 
   getData(userId) {
@@ -85,39 +77,34 @@ export class EditUserComponent implements OnInit {
       this.userService.getUser(userId),
     ).subscribe(
       ([departments, userData]) => {
-        console.log(departments, userData)
         this.setDepartments(departments);
         this.pageTitle = `Edit User: ${userData.name}`;
         this.userForm.setValue({
           name: userData.name,
           birthday: new Date(userData.birthday),
           selectedItems: userData.departments
-        })
+        });
 
         this.userObject = userData;
         this.isDataLoaded = true;
       }
-    )
+    );
   }
 
   ngOnInit() {
     // Read the product Id from the route parameter
     this.route.paramMap.subscribe(
       params => {
-        const id = params.get('id') || 0;
-        if (id != 0) {
+        const id = params.get('id');
+        if (id) {
           this.isEditMode = true;
         }
-        console.log(id);
         this.getUserDetail(id);
       }
     );
-
-    console.log("Edit mode:", this.isEditMode);
-    console.log("User id:", this.userObject.id);
   }
 
-  getUserDetail(id): void {
+  getUserDetail(id: string): void {
     this.departmentService.getDepartments().subscribe(
       (departments) => {
         this.setDepartments(departments);
@@ -125,33 +112,27 @@ export class EditUserComponent implements OnInit {
           name: '',
           birthday: '',
           selectedItems: '',
-        })
+        });
 
         this.isDataLoaded = true;
       }
-    )
+    );
 
-    if (id == 0) {
+    if (!id) {
       this.pageTitle = 'Add User';
-    }
-    else {
+    } else {
       this.getData(id);
     }
   }
 
-
   private createForm() {
     this.userForm = this.formBuilder.group({
-      name: new FormControl('', Validators.required),
-      birthday: new FormControl('', Validators.required),
-      selectedItems: new FormControl('', Validators.required)
+      name: ['', [Validators.required]],
+      birthday: ['', [Validators.required]],
+      selectedItems: ['', [Validators.required]],
     }, {
-      validator: MyDepartmentAgeValidator('birthday', 'selectedItems')
+      validator: this.MyDepartmentAgeValidator('birthday', 'selectedItems')
     });
-
-    this.userForm.valueChanges.subscribe(data => {
-      //console.log(this.userForm);
-    })
   }
 
   onSubmit() {
@@ -162,28 +143,24 @@ export class EditUserComponent implements OnInit {
       return;
     }
 
-
     this.userObject.name = this.userForm.get('name').value;
     this.userObject.birthday = this.userForm.get('birthday').value;
     this.userObject.departments = this.userForm.get('selectedItems').value;
 
-    if (this.userObject.id === undefined) {
-      this.userService.addUser(this.userObject).subscribe(response => {
-        console.log('API RESPONSE', response);
-
-      })
-    } else {
-      this.userService.updateUser(this.userObject).subscribe(response => {
-        console.log('API RESPONSE', response);
-      })
+    let saveMethod = 'addUser'; // this.userService.addUser
+    if (this.userObject.id) {
+      saveMethod = 'updateUser';
     }
-    var userMessage = this.userObject.name + " was successfully saved!";
-    this.toast.success(userMessage, "Success!");
-    this.onSaveComplete();
+
+    this.userService[saveMethod](this.userObject).subscribe(response => {
+      console.log('API RESPONSE', response);
+      const userMessage = this.userObject.name + ' was successfully saved!';
+      this.toast.success(userMessage, 'Success!');
+    });
+
+    this.goToUserList();
   }
 
-  dropdownList = [];
-  dropdownSettings = {};
 
   onItemSelect(item: any) {
     console.log(item);
@@ -200,7 +177,7 @@ export class EditUserComponent implements OnInit {
     this.router.navigate(['/users']);
   }
 
-  onSaveComplete(): void {
+  goToUserList(): void {
     // Reset the form to clear the flags
     this.userForm.reset();
     this.router.navigate(['/users']);
@@ -208,7 +185,7 @@ export class EditUserComponent implements OnInit {
 
   deleteUser(): void {
 
-    var data = this.createDialogMessage(this.userObject.name, this.userObject.departments[0].name);
+    const data = this.createDialogMessage(this.userObject.name, this.userObject.departments[0].name);
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '750px',
       data
@@ -216,18 +193,15 @@ export class EditUserComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Yes clicked');
         if (this.userObject.id === undefined) {
           // Don't delete, it was never saved.
-          console.log("Don't delete, it was never saved.");
-          this.onSaveComplete();
+          this.goToUserList();
         } else {
           this.userService.deleteUser(this.userObject.id)
             .subscribe({
               next: () => {
-                this.onSaveComplete();
-                var userMessage = this.userObject.name + " was successfully deleted!";
-                this.toast.success(userMessage, "Success!");
+                this.goToUserList();
+                this.toast.success(`${this.userObject.name} was successfully deleted!`, 'Success!');
               },
               error: err => this.errorMessage = err
             });
@@ -240,8 +214,35 @@ export class EditUserComponent implements OnInit {
   private createDialogMessage(userName: string, userDepartment: string) {
 
     return {
-      message: "Are you sure you want to delete " + userName + " from department " + userDepartment + "?",
-      title: "Delete User: " + userName
+      message: 'Are you sure you want to delete ' + userName + ' from department ' + userDepartment + '?',
+      title: 'Delete User: ' + userName
+    };
+  }
+
+  MyDepartmentAgeValidator(birthDay: string, depSelected: string) {
+    return (formGroup: FormGroup) => {
+      const birthDayControl = formGroup.controls[birthDay];
+      const departmentControl = formGroup.controls[depSelected];
+
+      if (Array.isArray(departmentControl.value)) {
+        const depName = departmentControl.value[0].name;
+
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const day = currentDate.getDate();
+        const codelessRestrictionDate = new Date(year - 20, month, day);
+        const codeMoreRestrictionDate = new Date(year - 24, month, day);
+        if (depName === 'Codeless' && birthDayControl.value > codelessRestrictionDate) {
+          birthDayControl.setErrors({ myDepartmentAgeValidatorCodeless: true });
+        } else {
+          if (depName === 'Codemore' && birthDayControl.value > codeMoreRestrictionDate) {
+            birthDayControl.setErrors({ myDepartmentAgeValidatorCodemore: true });
+          } else {
+            birthDayControl.setErrors(null);
+          }
+        }
+      }
     };
   }
 }

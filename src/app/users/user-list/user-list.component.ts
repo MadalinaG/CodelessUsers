@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { UserService } from './user.service';
 import { User } from '../data/user';
 
 @Component({
@@ -11,11 +11,11 @@ export class UserListComponent implements OnInit {
   pageTitle = 'Users';
   users: User[] = [];
   errorMessage = '';
-  pageSize: number = 10;
-  pageNr: number = 0;
-  allUsersLoaded: boolean = false;
-  checkBoxesChecked: number = 0;
-  progress: number = 0;
+  pageSize = 10;
+  pageNr = 0;
+  allUsersLoaded = false;
+  checkBoxesChecked = 0;
+  progress = 0;
 
   constructor(private userService: UserService) { }
 
@@ -23,20 +23,17 @@ export class UserListComponent implements OnInit {
     this.getUsers();
   }
 
-
   private getUsers() {
-
-    this.allUsersLoaded = true; //while the call is done, hide the button
+    this.allUsersLoaded = true; // while the call is done, hide the button
     this.callUserServicePerPageToGetUsers();
   }
 
   private callUserServicePerPageToGetUsers() {
     this.userService.getUsersByPage(this.pageNr, this.pageSize).subscribe({
       next: userslist => {
-        if (userslist.length < 1 || userslist.length < this.pageSize) {
+        if (!userslist.length || userslist.length < this.pageSize) {
           this.allUsersLoaded = true;
-        }
-        else {
+        } else {
           this.allUsersLoaded = false;
         }
         this.users.push(...userslist);
@@ -51,23 +48,19 @@ export class UserListComponent implements OnInit {
     this.getUsers();
   }
 
-  checkBox(event: any) {
-    console.log(event.currentTarget.checked);
-    if (event.currentTarget.checked) {
+  checkBoxClicked(value: boolean) {
+    if (value) {
       this.checkBoxesChecked++;
-    }
-    else {
+    } else {
       this.checkBoxesChecked--;
-      if (this.checkBoxesChecked == 0) {
-        this.progress = 0;
-      }
     }
 
     this.calculateProgress();
   }
 
   calculateProgress(): void {
-    if (this.users.length > 0 && this.checkBoxesChecked > 0) {
+    this.progress = 0;
+    if (this.users.length > 0) {
       this.progress = (this.checkBoxesChecked / this.users.length) * 100;
     }
   }
